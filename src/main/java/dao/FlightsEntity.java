@@ -58,4 +58,6 @@ public class FlightsEntity {
         return String.format("{id='%s', destination='%s', date='%s', numOfSeats=%d}", id, destination, date, numOfSeats);
     }
 
+
+
 }
