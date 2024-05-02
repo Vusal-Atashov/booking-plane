@@ -4,10 +4,13 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-public interface DAO<E,Q,T> {
+public interface DAO<E>{
     void save();
+
     Collection<E> getAll();
-   Optional<T> getOneBy(Predicate<Q> predicate);
-   Collection<E> getAllBY(Predicate<Q> predicate);
+
+    Optional<E> getOneBy(Predicate<E> predicate);
+
+    Collection<E> getAllBY(Predicate<E> predicate);
 
 }
