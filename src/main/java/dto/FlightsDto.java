@@ -6,6 +6,7 @@ public class FlightsDto {
     private final int numOfSeats;
     private String id;
 
+
     public FlightsDto(String destination, String date, int numOfSeats) {
         this.destination = destination;
         this.date = date;
