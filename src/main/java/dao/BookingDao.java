@@ -2,7 +2,7 @@ package dao;
 
 import java.util.List;
 
-public class BookingDao implements DAO<BookingEntity> {
+public class BookingDao {
 
 /*    void addBooking(BookingEntity booking);
     void cancelBooking(String bookingId);
