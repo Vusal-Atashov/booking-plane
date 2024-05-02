@@ -13,6 +13,10 @@ public class FlightsFileDAO extends FlightsDao {
     private static final String FLIGHT_FILE_PATH = RESOURCE_PATH.concat("flights");
     private final ObjectMapper objectMapper;
 
+
+    public static void main(String[] args) {
+
+    }
     public FlightsFileDAO(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }
