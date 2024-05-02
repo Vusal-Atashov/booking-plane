@@ -1,0 +1,16 @@
+package dao;
+
+import java.util.Collection;
+import java.util.Optional;
+import java.util.function.Predicate;
+
+public interface DAO<E>{
+    void save();
+
+    Collection<E> getAll();
+
+    Optional<E> getOneBy(Predicate<E> predicate);
+
+    Collection<E> getAllBY(Predicate<E> predicate);
+
+}
