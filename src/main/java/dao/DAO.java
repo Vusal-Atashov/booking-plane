@@ -2,7 +2,7 @@ package dao;
 
 public interface DAO<T> {
 
-    T save(T t);
+  //  T save(T t);
 
 //    Collection<T> getAll();
 //
