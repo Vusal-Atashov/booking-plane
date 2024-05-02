@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class BookingEntity {
-    private static long MAX_ID=0;
+    private static long MAX_ID = 0;
     private final long id;
     private String flightId;
     private List<String> passengerNames;
