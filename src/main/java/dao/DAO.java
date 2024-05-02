@@ -5,7 +5,7 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 public interface DAO<E>{
-    void save();
+    E save(E e);
 
     Collection<E> getAll();
 
