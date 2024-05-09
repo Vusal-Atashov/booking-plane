@@ -1,12 +1,10 @@
 package dto;
 
 
-import dao.entity.FlightEntity;
-
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class FlightDTO {
+public class FlightDto {
     public static long MAX_ID = 0;
     private long id;
     private String origin;
@@ -14,7 +12,7 @@ public class FlightDTO {
     private LocalDateTime departureTime;
     private int numOfSeats;
 
-    public FlightDTO(String origin, String destination, LocalDateTime departureTime, int numOfSeats) {
+    public FlightDto(String origin, String destination, LocalDateTime departureTime, int numOfSeats) {
         this.id = ++MAX_ID;
         this.origin = origin;
         this.destination = destination;
@@ -22,10 +20,10 @@ public class FlightDTO {
         this.numOfSeats = numOfSeats;
     }
 
-    public FlightDTO() {
+    public FlightDto() {
     }
 
-    public FlightDTO(long id, String origin, String destination, LocalDateTime departureTime, int numOfSeats) {
+    public FlightDto(long id, String origin, String destination, LocalDateTime departureTime, int numOfSeats) {
         this.origin = origin;
         this.id = id;
         this.destination = destination;
@@ -73,7 +71,7 @@ public class FlightDTO {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        FlightDTO that = (FlightDTO) o;
+        FlightDto that = (FlightDto) o;
         return Objects.equals(id, that.id);
     }
 
