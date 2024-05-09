@@ -1,45 +1,56 @@
 package dao.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dao.BookingEntity;
 import dao.FlightsDao;
 import dao.FlightsEntity;
 
-import java.util.Collection;
-import java.util.Optional;
+import java.io.*;
+import java.util.*;
 import java.util.function.Predicate;
 
 public class FlightsFileDAO extends FlightsDao {
     private static final String RESOURCE_PATH = "src/main/java/resource/";
-    private static final String FLIGHT_FILE_PATH = RESOURCE_PATH.concat("flights");
+    private static final String FLIGHTS_FILE_PATH = RESOURCE_PATH + "Flights.json";
     private final ObjectMapper objectMapper;
 
-
-    public static void main(String[] args) {
-
-    }
     public FlightsFileDAO(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }
 
-
-    @Override
-    public FlightsEntity save(FlightsEntity flightsEntity) {
-        return null;
+    public boolean save(Collection<FlightsEntity> flights) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(FLIGHTS_FILE_PATH))) {
+            bw.write(objectMapper.writeValueAsString(flights));
+            return true;
+        } catch (IOException e) {
+            System.err.println("Error while saving flights: " + e.getMessage());
+            return false;
+        }
     }
-
-    @Override
     public Collection<FlightsEntity> getAll() {
-        return null;
+        try (BufferedReader br = new BufferedReader(new FileReader(FLIGHTS_FILE_PATH))) {
+            return new ArrayList<>(Arrays.asList(objectMapper.readValue(br, FlightsEntity[].class)));
+        } catch (IOException e) {
+            System.err.println("Error while reading flights from file: " + e.getMessage());
+            return Collections.emptyList();
+        }
     }
 
     @Override
     public Optional<FlightsEntity> getOneBy(Predicate<FlightsEntity> predicate) {
-        return Optional.empty();
+        return getAll().stream().filter(predicate).findFirst();
     }
 
     @Override
-    public Collection<FlightsEntity> getAllBY(Predicate<FlightsEntity> predicate) {
-        return null;
+    public Optional<Collection<FlightsEntity>> getAllBy(Predicate<FlightsEntity> predicate) {
+        return Optional.of(getAll().stream().filter(predicate).toList());
     }
 
+    @Override
+    public void delete(int id) {
+        Collection<FlightsEntity> bookings = getAll();
+        bookings.removeIf(flights -> flights.getId() == id);
+        save(bookings);
+    }
 }
+
