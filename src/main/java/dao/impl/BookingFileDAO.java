@@ -1,57 +1,62 @@
+
 package dao.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dao.BookingDao;
 import dao.BookingEntity;
-import dao.DAO;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Collection;
-import java.util.Optional;
+import java.io.*;
+import java.util.*;
 import java.util.function.Predicate;
 
 public class BookingFileDAO extends BookingDao {
-    private static final String RESOURCE_PATH = "src/main/java/resource";
-    private static final String BOOKING_FILE_PATH = RESOURCE_PATH.concat("Booking.txt");
+    private static final String RESOURCE_PATH = "src/main/java/resource/";
+    private static final String BOOKING_FILE_PATH = RESOURCE_PATH + "Booking.json";
     private final ObjectMapper objectMapper;
+
     public BookingFileDAO(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }
 
 
-
     @Override
-    public BookingDao save(BookingDao bookingDao) {
-        try {
-            final Path path = Paths.get(BOOKING_FILE_PATH);
-            Files.write(path, objectMapper.writeValueAsBytes(bookingDao));
+    public boolean save(Collection<BookingEntity> bookings) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(BOOKING_FILE_PATH))) {
+            bw.write(objectMapper.writeValueAsString(bookings));
+            return true;
         } catch (IOException e) {
-            System.err.println("Error writing students to file");
-            e.printStackTrace();
+            System.err.println("Error while saving bookings: " + e.getMessage());
+            return false;
         }
-        return bookingDao;
     }
 
     @Override
-    public int hashCode() {
-        return super.hashCode();
+    public Collection<BookingEntity> getAll() {
+        try (BufferedReader br = new BufferedReader(new FileReader(BOOKING_FILE_PATH))) {
+            return new ArrayList<>(Arrays.asList(objectMapper.readValue(br, BookingEntity[].class)));
+        } catch (IOException e) {
+            System.err.println("Error while reading bookings from file: " + e.getMessage());
+            return Collections.emptyList();
+        }
+    }
+
+
+    @Override
+    public Optional<BookingEntity> getOneBy(Predicate<BookingEntity> predicate) {
+        return getAll().stream().filter(predicate).findFirst();
     }
 
     @Override
-    public Collection<BookingDao> getAll() {
-        return null;
+    public Optional<Collection<BookingEntity>> getAllBy(Predicate<BookingEntity> predicate) {
+        return Optional.of(getAll().stream().filter(predicate).toList());
     }
 
     @Override
-    public Optional<BookingDao> getOneBy(Predicate<BookingDao> predicate) {
-        return Optional.empty();
-    }
-
-    @Override
-    public Collection<BookingDao> getAllBY(Predicate<BookingDao> predicate) {
-        return null;
+    public void delete(int id) {
+        Collection<BookingEntity> bookings = getAll();
+        bookings.removeIf(booking -> booking.getId() == id);
+        save(bookings);
     }
 }
+
+
