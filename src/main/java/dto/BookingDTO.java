@@ -1,26 +1,26 @@
-package dao;
+package dto;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class BookingEntity implements Serializable {
+public class BookingDTO {
+
     private static long MAX_ID = 0;
     private long id;
     private int flightId;
     private List<String> passengerNames;
 
-    public BookingEntity() {
+    public BookingDTO() {
+        this.id = ++MAX_ID;
     }
 
-    public BookingEntity(long id, int flightId, List<String> passengerNames) {
+    public BookingDTO(long id, int flightId, List<String> passengerNames) {
         this.id = id;
         this.flightId = flightId;
         this.passengerNames = passengerNames;
     }
 
-    public BookingEntity(int flightId, List<String> passengerNames) {
+    public BookingDTO(int flightId, List<String> passengerNames) {
         this.id = ++MAX_ID;
         this.flightId = flightId;
         this.passengerNames = passengerNames;
@@ -54,7 +54,7 @@ public class BookingEntity implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        BookingEntity that = (BookingEntity) o;
+        BookingDTO that = (BookingDTO) o;
         return id == that.id && Objects.equals(flightId, that.flightId) && Objects.equals(passengerNames, that.passengerNames);
     }
 
@@ -68,3 +68,5 @@ public class BookingEntity implements Serializable {
         return String.format("{id=%d, flightId='%s', passengerNames=%s}", id, flightId, passengerNames);
     }
 }
+
+
