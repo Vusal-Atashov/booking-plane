@@ -1,25 +1,27 @@
-package dao;
+package dto;
+
 
 import java.util.Objects;
 
-public class FlightsEntity {
+public class FlightDTO {
     public static int MAX_ID = 0;
     private int id;
     private String destination;
     private String date;
     private int numOfSeats;
 
-    public FlightsEntity(String destination, String date, int numOfSeats) {
+    public FlightDTO() {
+        this.id = ++MAX_ID;
+    }
+
+    public FlightDTO(String destination, String date, int numOfSeats) {
         this.id = ++MAX_ID;
         this.destination = destination;
         this.date = date;
         this.numOfSeats = numOfSeats;
     }
 
-    public FlightsEntity() {
-    }
-
-    public FlightsEntity(int id, String destination, String date, int numOfSeats) {
+    public FlightDTO(int id, String destination, String date, int numOfSeats) {
         this.id = id;
         this.destination = destination;
         this.date = date;
@@ -58,19 +60,17 @@ public class FlightsEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        FlightsEntity that = (FlightsEntity) o;
-        return Objects.equals(id, that.id);
+        FlightDTO flightDTO = (FlightDTO) o;
+        return id == flightDTO.id && numOfSeats == flightDTO.numOfSeats && Objects.equals(destination, flightDTO.destination) && Objects.equals(date, flightDTO.date);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(id, destination, date, numOfSeats);
     }
 
     @Override
     public String toString() {
-        return String.format("{id='%s', destination='%s', date='%s', numOfSeats=%d}", id, destination, date, numOfSeats);
+        return String.format("{id=%d, destination='%s', date='%s', numOfSeats=%d}", id, destination, date, numOfSeats);
     }
-
-
 }
