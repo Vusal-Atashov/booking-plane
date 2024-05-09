@@ -1,9 +1,8 @@
 package console;
 
 import dto.BookingDTO;
-import dto.FlightDTO;
+import dto.FlightDto;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -14,7 +13,7 @@ import java.util.Scanner;
 public class BookingAndFlight {
     public static Scanner scanner = new Scanner(System.in);
     public static ArrayList<BookingDTO> bookings = new ArrayList<>();
-    public static ArrayList<FlightDTO> flights = new ArrayList<>();
+    public static ArrayList<FlightDto> flights = new ArrayList<>();
 
 
     public static List<BookingDTO> createBooking() {
@@ -30,9 +29,9 @@ public class BookingAndFlight {
         return bookings;
     }
 
-    public static List<FlightDTO> createFlight() {
+    public static FlightDto createFlight() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        FlightDTO flightDTO = new FlightDTO();
+        FlightDto flightDTO = new FlightDto();
         System.out.println("Enter flight origin: ");
         flightDTO.setOrigin(scanner.nextLine());
         System.out.println("Enter flight destination: ");
@@ -41,7 +40,6 @@ public class BookingAndFlight {
         flightDTO.setDepartureTime(LocalDateTime.parse(scanner.nextLine(), formatter));
         System.out.println("Enter total number of seats: ");
         flightDTO.setNumOfSeats(scanner.nextInt());
-        flights.add(flightDTO);
-        return flights;
+        return flightDTO;
     }
 }

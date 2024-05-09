@@ -10,10 +10,10 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public class BookingServiceIMPL implements BookingService {
+public class BookingServiceImpl implements BookingService {
     private final BookingDao bookingDao;
 
-    public BookingServiceIMPL(BookingDao bookingDao) {
+    public BookingServiceImpl(BookingDao bookingDao) {
         this.bookingDao = bookingDao;
     }
 

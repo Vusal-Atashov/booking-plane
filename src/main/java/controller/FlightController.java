@@ -1,21 +1,20 @@
 package controller;
 
-import dto.FlightDTO;
+import dto.FlightDto;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.List;
 
 public interface FlightController {
-    void saveFlights(Collection<FlightDTO> flights);
+    void saveAllToFile();
 
-    Collection<FlightDTO> getAllFlights();
+    void getAllFromFile();
 
-    FlightDTO getFlightById(int flightId);
+    List<FlightDto> getAllFlights();
 
-    List<FlightDTO> getAllFlightsByDestination(String destination);
+    FlightDto getFlightById(long flightId);
 
-    List<FlightDTO> getAllFlightsByDate(LocalDateTime date);
+    void saveFlight(FlightDto flightDto);
 
-    void cancelFlight(int flightId);
+    List<FlightDto> getFlightsByCriteria(String destination, LocalDateTime dateTime, int seats);
 }

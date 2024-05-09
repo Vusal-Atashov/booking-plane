@@ -1,15 +1,14 @@
 package console;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import controller.BookingController;
 import controller.BookingControllerImpl;
 import controller.FlightController;
-import controller.FlightControllerIMPL;
+import controller.FlightControllerImpl;
+import dao.FlightDaoImpl;
 import dao.impl.BookingFileDAO;
-import dao.impl.FlightsFileDAO;
-import services.BookingServiceIMPL;
-import services.FlightServiceIMPL;
+import services.BookingServiceImpl;
+import services.FlightServiceImpl;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -22,12 +21,13 @@ public class ConsoleManager {
     private final Scanner scanner;
 
     public ConsoleManager() {
-        this.flightController = new FlightControllerIMPL(new FlightServiceIMPL(new FlightsFileDAO(new ObjectMapper().registerModule(new JavaTimeModule()))));
-        this.bookingController = new BookingControllerImpl(new BookingServiceIMPL(new BookingFileDAO(new ObjectMapper())));
+        this.flightController = new FlightControllerImpl(new FlightServiceImpl(new FlightDaoImpl()));
+        this.bookingController = new BookingControllerImpl(new BookingServiceImpl(new BookingFileDAO(new ObjectMapper())));
         this.scanner = new Scanner(System.in);
     }
 
     public void run() {
+        flightController.getAllFromFile();
         // Main menu loop
         boolean exit = false;
         while (!exit) {
@@ -37,21 +37,19 @@ public class ConsoleManager {
                 case 1:
                     bookingController.saveBooking(BookingAndFlight.createBooking());
                 case 2:
-                    flightController.saveFlights(BookingAndFlight.createFlight());
+                    flightController.saveFlight(BookingAndFlight.createFlight());
                     break;
                 case 3:
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-                    System.out.print("Enter the date (dd-MM-YYYY hh:mm): ");
-                    flightController.getAllFlightsByDate(LocalDateTime.parse(scanner.nextLine(), formatter));
+                    getFlightInfo();
                     break;
                 case 4:
                     System.out.print("Enter Flight id : ");
                     flightController.getFlightById(Integer.parseInt(scanner.nextLine()));
                     break;
-                case 5:
-                    System.out.print("Enter Destination :v");
-                    flightController.getAllFlightsByDestination(scanner.nextLine());
-                    break;
+//                case 5:
+//                    System.out.print("Enter Destination :v");
+//                    flightController.getAllFlightsByDestination(scanner.nextLine());
+//                    break;
                 case 6:
                     System.out.print("Enter booking id : ");
                     bookingController.removeBooking(Integer.parseInt(scanner.nextLine()));
@@ -62,6 +60,7 @@ public class ConsoleManager {
                     break;
                 case 8:
                     exit = true;
+                    flightController.saveAllToFile();
                     break;
                 default:
                     System.out.println("Invalid choice. Please try again.");
@@ -80,6 +79,18 @@ public class ConsoleManager {
         System.out.println("6. My Flights");
         System.out.println("8. Exit");
         System.out.print("Enter your choice: ");
+    }
+
+    private void getFlightInfo() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        System.out.print("Enter the destination: ");
+        String destination = scanner.nextLine();
+        System.out.print("Enter the date (yyyy-MM-dd HH:mm): ");
+        LocalDateTime time = LocalDateTime.parse(scanner.nextLine(), formatter);
+        System.out.print("Enter the number of seats: ");
+        int seats = scanner.nextInt();
+        scanner.nextLine();
+        System.out.println(flightController.getFlightsByCriteria(destination, time, seats));
     }
 }
 

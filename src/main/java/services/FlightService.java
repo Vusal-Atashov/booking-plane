@@ -1,20 +1,23 @@
 package services;
 
 import dao.entity.FlightEntity;
-import dto.FlightDTO;
+import dto.FlightDto;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
 
 public interface FlightService {
-    void saveFlights(Collection<FlightDTO> flights);
+    void saveAllToFile();
 
-    Collection<FlightDTO> getAllFlights();
+    void getAllFromFile();
 
-    void cancelFlight(int flightId);
+    List<FlightDto> getAllFlights();
 
-    List<FlightDTO> getAll(Predicate<FlightEntity> predicate);
+    FlightDto getFlightById(long flightId);
 
-    FlightDTO getOneFlightBy(Predicate<FlightEntity> predicate);
+    List<FlightDto> getFlightsByCriteria(String destination, LocalDateTime dateTime, int seats);
+
+    void saveFlight(FlightDto flightDto);
 }
