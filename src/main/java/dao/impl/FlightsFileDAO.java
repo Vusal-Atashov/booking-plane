@@ -1,9 +1,8 @@
 package dao.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dao.BookingEntity;
 import dao.FlightsDao;
-import dao.FlightsEntity;
+import dao.entity.FlightEntity;
 
 import java.io.*;
 import java.util.*;
@@ -18,7 +17,7 @@ public class FlightsFileDAO extends FlightsDao {
         this.objectMapper = objectMapper;
     }
 
-    public boolean save(Collection<FlightsEntity> flights) {
+    public boolean save(Collection<FlightEntity> flights) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(FLIGHTS_FILE_PATH))) {
             bw.write(objectMapper.writeValueAsString(flights));
             return true;
@@ -27,9 +26,9 @@ public class FlightsFileDAO extends FlightsDao {
             return false;
         }
     }
-    public Collection<FlightsEntity> getAll() {
+    public Collection<FlightEntity> getAll() {
         try (BufferedReader br = new BufferedReader(new FileReader(FLIGHTS_FILE_PATH))) {
-            return new ArrayList<>(Arrays.asList(objectMapper.readValue(br, FlightsEntity[].class)));
+            return new ArrayList<>(Arrays.asList(objectMapper.readValue(br, FlightEntity[].class)));
         } catch (IOException e) {
             System.err.println("Error while reading flights from file: " + e.getMessage());
             return Collections.emptyList();
@@ -37,18 +36,18 @@ public class FlightsFileDAO extends FlightsDao {
     }
 
     @Override
-    public Optional<FlightsEntity> getOneBy(Predicate<FlightsEntity> predicate) {
+    public Optional<FlightEntity> getOneBy(Predicate<FlightEntity> predicate) {
         return getAll().stream().filter(predicate).findFirst();
     }
 
     @Override
-    public Optional<Collection<FlightsEntity>> getAllBy(Predicate<FlightsEntity> predicate) {
+    public Optional<Collection<FlightEntity>> getAllBy(Predicate<FlightEntity> predicate) {
         return Optional.of(getAll().stream().filter(predicate).toList());
     }
 
     @Override
     public void delete(int id) {
-        Collection<FlightsEntity> bookings = getAll();
+        Collection<FlightEntity> bookings = getAll();
         bookings.removeIf(flights -> flights.getId() == id);
         save(bookings);
     }

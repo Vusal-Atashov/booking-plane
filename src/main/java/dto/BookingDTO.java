@@ -1,5 +1,7 @@
 package dto;
 
+import dao.entity.BookingEntity;
+
 import java.util.List;
 import java.util.Objects;
 
@@ -7,20 +9,19 @@ public class BookingDTO {
 
     private static long MAX_ID = 0;
     private long id;
-    private int flightId;
+    private long flightId;
     private List<String> passengerNames;
 
     public BookingDTO() {
-        this.id = ++MAX_ID;
     }
 
-    public BookingDTO(long id, int flightId, List<String> passengerNames) {
+    public BookingDTO(long id, long flightId, List<String> passengerNames) {
         this.id = id;
         this.flightId = flightId;
         this.passengerNames = passengerNames;
     }
 
-    public BookingDTO(int flightId, List<String> passengerNames) {
+    public BookingDTO(long flightId, List<String> passengerNames) {
         this.id = ++MAX_ID;
         this.flightId = flightId;
         this.passengerNames = passengerNames;
@@ -30,7 +31,7 @@ public class BookingDTO {
         return id;
     }
 
-    public int getFlightId() {
+    public long getFlightId() {
         return flightId;
     }
 
@@ -38,7 +39,7 @@ public class BookingDTO {
         this.id = id;
     }
 
-    public void setFlightId(int flightId) {
+    public void setFlightId(long flightId) {
         this.flightId = flightId;
     }
 

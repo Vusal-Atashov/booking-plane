@@ -1,6 +1,7 @@
 package console;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import controller.BookingController;
 import controller.BookingControllerImpl;
 import controller.FlightController;
@@ -10,6 +11,8 @@ import dao.impl.FlightsFileDAO;
 import services.BookingServiceIMPL;
 import services.FlightServiceIMPL;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -19,7 +22,7 @@ public class ConsoleManager {
     private final Scanner scanner;
 
     public ConsoleManager() {
-        this.flightController = new FlightControllerIMPL(new FlightServiceIMPL(new FlightsFileDAO(new ObjectMapper())));
+        this.flightController = new FlightControllerIMPL(new FlightServiceIMPL(new FlightsFileDAO(new ObjectMapper().registerModule(new JavaTimeModule()))));
         this.bookingController = new BookingControllerImpl(new BookingServiceIMPL(new BookingFileDAO(new ObjectMapper())));
         this.scanner = new Scanner(System.in);
     }
@@ -35,9 +38,11 @@ public class ConsoleManager {
                     bookingController.saveBooking(BookingAndFlight.createBooking());
                 case 2:
                     flightController.saveFlights(BookingAndFlight.createFlight());
+                    break;
                 case 3:
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
                     System.out.print("Enter the date (dd-MM-YYYY hh:mm): ");
-                    flightController.getAllFlightsByDate(scanner.nextLine());
+                    flightController.getAllFlightsByDate(LocalDateTime.parse(scanner.nextLine(), formatter));
                     break;
                 case 4:
                     System.out.print("Enter Flight id : ");

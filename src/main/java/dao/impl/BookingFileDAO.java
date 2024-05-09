@@ -3,7 +3,7 @@ package dao.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dao.BookingDao;
-import dao.BookingEntity;
+import dao.entity.BookingEntity;
 
 import java.io.*;
 import java.util.*;

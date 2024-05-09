@@ -1,6 +1,8 @@
 package dao;
 
-public abstract class FlightsDao implements DAO<FlightsEntity> {
+import dao.entity.FlightEntity;
+
+public abstract class FlightsDao implements DAO<FlightEntity> {
 
 
 }

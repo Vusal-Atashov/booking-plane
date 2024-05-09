@@ -1,12 +1,10 @@
 package controller;
 
-import dao.BookingEntity;
 import dto.BookingDTO;
 import services.BookingService;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.function.Predicate;
 
 public class BookingControllerImpl implements BookingController {
     private final BookingService bookingService;
