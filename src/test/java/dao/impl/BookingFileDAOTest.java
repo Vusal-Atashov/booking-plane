@@ -1,7 +1,7 @@
 package dao.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dao.BookingEntity;
+import dao.entity.BookingEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.Arrays;

@@ -3,6 +3,7 @@ package controller;
 import dto.FlightDTO;
 import services.FlightService;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -34,8 +35,8 @@ public class FlightControllerIMPL implements FlightController {
     }
 
     @Override
-    public List<FlightDTO> getAllFlightsByDate(String date) {
-        return flightService.getAll(flight -> flight.getDate().equals(date));
+    public List<FlightDTO> getAllFlightsByDate(LocalDateTime date) {
+        return flightService.getAll(flight -> flight.getDepartureTime().equals(date));
     }
 
     @Override

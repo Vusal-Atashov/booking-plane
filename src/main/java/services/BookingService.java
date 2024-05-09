@@ -1,6 +1,6 @@
 package services;
 
-import dao.BookingEntity;
+import dao.entity.BookingEntity;
 import dto.BookingDTO;
 
 import java.util.Collection;

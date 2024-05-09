@@ -1,6 +1,6 @@
 package services;
 
-import dao.FlightsEntity;
+import dao.entity.FlightEntity;
 import dao.FlightsDao;
 import dto.FlightDTO;
 
@@ -21,14 +21,17 @@ public class FlightServiceIMPL implements FlightService {
     @Override
     public void saveFlights(Collection<FlightDTO> flights) {
         flightsDao.save(flights.stream()
-                .map(dto -> new FlightsEntity(dto.getDestination(), dto.getDate(), dto.getNumOfSeats()))
+                .map(dto -> new FlightEntity(dto.getOrigin(), dto.getDestination(),
+                        dto.getDepartureTime(), dto.getNumOfSeats()))
                 .collect(Collectors.toList()));
     }
 
     @Override
     public Collection<FlightDTO> getAllFlights() {
         return flightsDao.getAll().stream()
-                .map(flight -> new FlightDTO(flight.getId(),flight.getDestination(), flight.getDate(), flight.getNumOfSeats()))
+                .map(flight -> new FlightDTO(flight.getId(), flight.getOrigin(),
+                        flight.getDestination(), flight.getDepartureTime(),
+                        flight.getNumOfSeats()))
                 .collect(Collectors.toList());
     }
 
@@ -39,18 +42,22 @@ public class FlightServiceIMPL implements FlightService {
 
 
     @Override
-    public List<FlightDTO> getAll(Predicate<FlightsEntity> predicate) {
+    public List<FlightDTO> getAll(Predicate<FlightEntity> predicate) {
         return flightsDao.getAllBy(predicate)
                 .orElse(new ArrayList<>())
                 .stream()
-                .map(entity -> new FlightDTO(entity.getId(), entity.getDestination(), entity.getDate(), entity.getNumOfSeats()))
+                .map(entity -> new FlightDTO(entity.getId(), entity.getOrigin(),
+                        entity.getDestination(), entity.getDepartureTime(),
+                        entity.getNumOfSeats()))
                 .toList();
     }
 
     @Override
-    public FlightDTO getOneFlightBy(Predicate<FlightsEntity> predicate) {
+    public FlightDTO getOneFlightBy(Predicate<FlightEntity> predicate) {
         return flightsDao.getOneBy(predicate)
-                .map(entity -> new FlightDTO(entity.getId(), entity.getDestination(), entity.getDate(), entity.getNumOfSeats()))
+                .map(entity -> new FlightDTO(entity.getId(), entity.getOrigin(),
+                        entity.getDestination(), entity.getDepartureTime(),
+                        entity.getNumOfSeats()))
                 .orElse(null);
 
     }

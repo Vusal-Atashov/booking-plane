@@ -1,13 +1,12 @@
 package services;
 
 import dao.BookingDao;
-import dao.BookingEntity;
+import dao.entity.BookingEntity;
 import dto.BookingDTO;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 

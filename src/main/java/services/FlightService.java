@@ -1,6 +1,6 @@
 package services;
 
-import dao.FlightsEntity;
+import dao.entity.FlightEntity;
 import dto.FlightDTO;
 
 import java.util.Collection;
@@ -14,7 +14,7 @@ public interface FlightService {
 
     void cancelFlight(int flightId);
 
-    List<FlightDTO> getAll(Predicate<FlightsEntity> predicate);
+    List<FlightDTO> getAll(Predicate<FlightEntity> predicate);
 
-    FlightDTO getOneFlightBy(Predicate<FlightsEntity> predicate);
+    FlightDTO getOneFlightBy(Predicate<FlightEntity> predicate);
 }

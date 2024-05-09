@@ -1,26 +1,25 @@
-package dao;
+package dao.entity;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class BookingEntity implements Serializable {
     private static long MAX_ID = 0;
     private long id;
-    private int flightId;
+    private long flightId;
     private List<String> passengerNames;
 
     public BookingEntity() {
     }
 
-    public BookingEntity(long id, int flightId, List<String> passengerNames) {
+    public BookingEntity(long id, long flightId, List<String> passengerNames) {
         this.id = id;
         this.flightId = flightId;
         this.passengerNames = passengerNames;
     }
 
-    public BookingEntity(int flightId, List<String> passengerNames) {
+    public BookingEntity(long flightId, List<String> passengerNames) {
         this.id = ++MAX_ID;
         this.flightId = flightId;
         this.passengerNames = passengerNames;
@@ -30,7 +29,7 @@ public class BookingEntity implements Serializable {
         return id;
     }
 
-    public int getFlightId() {
+    public long getFlightId() {
         return flightId;
     }
 
@@ -38,7 +37,7 @@ public class BookingEntity implements Serializable {
         this.id = id;
     }
 
-    public void setFlightId(int flightId) {
+    public void setFlightId(long flightId) {
         this.flightId = flightId;
     }
 
