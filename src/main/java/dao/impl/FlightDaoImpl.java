@@ -1,7 +1,8 @@
-package dao;
+package dao.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import dao.FlightDao;
 import dao.entity.FlightEntity;
 
 import java.io.BufferedReader;

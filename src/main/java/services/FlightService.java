@@ -1,12 +1,9 @@
 package services;
 
-import dao.entity.FlightEntity;
 import dto.FlightDto;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.List;
-import java.util.function.Predicate;
 
 public interface FlightService {
     void saveAllToFile();
@@ -20,4 +17,6 @@ public interface FlightService {
     List<FlightDto> getFlightsByCriteria(String destination, LocalDateTime dateTime, int seats);
 
     void saveFlight(FlightDto flightDto);
+
+    List<FlightDto> getNext24HoursFlights(String origin);
 }

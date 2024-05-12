@@ -38,8 +38,8 @@ public class BookingDaoImpl implements BookingDao {
     }
 
     @Override
-    public Optional<List<BookingEntity>> getByFullName(List<String> passengerNames) {
-        return Optional.of(bookingEntityList.stream().filter(entity -> entity.getPassengerNames() == passengerNames).toList());
+    public List<BookingEntity> getByFullName(List<String> passengerNames) {
+        return bookingEntityList.stream().filter(entity -> entity.getPassengerNames() == passengerNames).toList();
     }
 
     @Override
@@ -71,6 +71,5 @@ public class BookingDaoImpl implements BookingDao {
     public void cancelBooking(int bookingId) {
         List<BookingEntity> bookings = getAll();
         bookings.removeIf(booking -> booking.getId() == bookingId);
-        saveAll(bookings);
     }
 }

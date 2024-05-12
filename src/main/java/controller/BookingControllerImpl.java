@@ -2,16 +2,12 @@ package controller;
 
 import dto.BookingDto;
 import services.BookingService;
+import services.BookingServiceImpl;
 
 import java.util.List;
-import java.util.Optional;
 
 public class BookingControllerImpl implements BookingController {
-    private final BookingService bookingService;
-
-    public BookingControllerImpl(BookingService bookingService) {
-        this.bookingService = bookingService;
-    }
+    private final BookingService bookingService = new BookingServiceImpl();
 
     @Override
     public void saveBooking(BookingDto bookingDto) {

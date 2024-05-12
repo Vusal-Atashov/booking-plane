@@ -17,4 +17,6 @@ public interface FlightController {
     void saveFlight(FlightDto flightDto);
 
     List<FlightDto> getFlightsByCriteria(String destination, LocalDateTime dateTime, int seats);
+
+    List<FlightDto> getNext24HoursFlights(String origin);
 }
