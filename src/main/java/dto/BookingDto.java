@@ -1,27 +1,25 @@
 package dto;
 
-import dao.entity.BookingEntity;
-
 import java.util.List;
 import java.util.Objects;
 
-public class BookingDTO {
+public class BookingDto {
 
     private static long MAX_ID = 0;
     private long id;
     private long flightId;
     private List<String> passengerNames;
 
-    public BookingDTO() {
+    public BookingDto() {
     }
 
-    public BookingDTO(long id, long flightId, List<String> passengerNames) {
+    public BookingDto(long id, long flightId, List<String> passengerNames) {
         this.id = id;
         this.flightId = flightId;
         this.passengerNames = passengerNames;
     }
 
-    public BookingDTO(long flightId, List<String> passengerNames) {
+    public BookingDto(long flightId, List<String> passengerNames) {
         this.id = ++MAX_ID;
         this.flightId = flightId;
         this.passengerNames = passengerNames;
@@ -55,7 +53,7 @@ public class BookingDTO {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        BookingDTO that = (BookingDTO) o;
+        BookingDto that = (BookingDto) o;
         return id == that.id && Objects.equals(flightId, that.flightId) && Objects.equals(passengerNames, that.passengerNames);
     }
 

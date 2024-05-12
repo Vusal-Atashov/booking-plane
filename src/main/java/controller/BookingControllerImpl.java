@@ -1,10 +1,10 @@
 package controller;
 
-import dto.BookingDTO;
+import dto.BookingDto;
 import services.BookingService;
 
-import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 public class BookingControllerImpl implements BookingController {
     private final BookingService bookingService;
@@ -13,34 +13,34 @@ public class BookingControllerImpl implements BookingController {
         this.bookingService = bookingService;
     }
 
-
     @Override
-    public void saveBooking(Collection<BookingDTO> bookingDTOS) {
-        bookingService.saveBookings(bookingDTOS);
+    public void saveBooking(BookingDto bookingDto) {
+        bookingService.saveBooking(bookingDto);
     }
 
     @Override
-    public Collection<BookingDTO> getAllBooking() {
-        return bookingService.getBookingsAll();
+    public void saveAllToFile() {
+        bookingService.saveAllToFile();
     }
 
     @Override
-    public BookingDTO getOneBookings(int id) {
-        return bookingService.getOneBookingsBy(booking -> booking.getId() == (id));
+    public List<BookingDto> getAllBookings() {
+        return bookingService.getAllBookings();
     }
 
     @Override
-    public List<BookingDTO> getAllBookingsByPassenger(List<String> passengerNames) {
-        return bookingService.getAllBookingsByPassenger(booking -> booking.getPassengerNames().equals(passengerNames));
+    public void getAllFromFile() {
+        bookingService.getAllFromFile();
     }
 
     @Override
-    public List<BookingDTO> getAllBookingsByPassenger(int flightId) {
-        return bookingService.getAllBookingsByPassenger(booking -> booking.getFlightId() == (flightId));
+    public void cancelBooking(int bookingId) {
+        bookingService.cancelBooking(bookingId);
     }
 
     @Override
-    public void removeBooking(int id) {
-        bookingService.cancelBooking(id);
+    public List<BookingDto> getAllBookingsByPassenger(String passengerName) {
+        return bookingService.getAllBookingsByPassenger(passengerName);
     }
+
 }
