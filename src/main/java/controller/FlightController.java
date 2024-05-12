@@ -1,5 +1,6 @@
 package controller;
 
+import dto.CriteriaDto;
 import dto.FlightDto;
 
 import java.time.LocalDateTime;
@@ -16,7 +17,7 @@ public interface FlightController {
 
     void saveFlight(FlightDto flightDto);
 
-    List<FlightDto> getFlightsByCriteria(String destination, LocalDateTime dateTime, int seats);
+    List<FlightDto> getFlightsByCriteria(CriteriaDto criteria);
 
     List<FlightDto> getNext24HoursFlights(String origin);
 }

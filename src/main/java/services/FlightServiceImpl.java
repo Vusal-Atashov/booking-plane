@@ -3,6 +3,7 @@ package services;
 import dao.FlightDao;
 import dao.entity.FlightEntity;
 import dao.impl.FlightDaoImpl;
+import dto.CriteriaDto;
 import dto.FlightDto;
 import exception.ResourceNotFoundException;
 
@@ -42,12 +43,12 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public List<FlightDto> getFlightsByCriteria(String destination, LocalDateTime dateTime, int seats) {
+    public List<FlightDto> getFlightsByCriteria(CriteriaDto criteria) {
         List<FlightEntity> entities = flightDao.getAll();
         var flightDtos = entities.stream().filter(entity ->
-                entity.getDestination().equals(destination) &&
-                        entity.getDepartureTime().equals(dateTime) &&
-                        entity.getNumOfSeats() >= seats
+                entity.getDestination().equals(criteria.getDestination()) &&
+                        entity.getDepartureTime().equals(criteria.getTime()) &&
+                        entity.getNumOfSeats() >= criteria.getSeats()
         ).map(entity -> new FlightDto(entity.getId(), entity.getOrigin(),
                 entity.getDestination(), entity.getDepartureTime(),
                 entity.getNumOfSeats())

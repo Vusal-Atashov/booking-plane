@@ -51,6 +51,7 @@ public class BookingDaoImpl implements BookingDao {
     public List<BookingEntity> getAllFromFile() {
         try (BufferedReader br = new BufferedReader(new FileReader(BOOKING_FILE_PATH))) {
             bookingEntityList.addAll(Arrays.asList(MAPPER.readValue(br, BookingEntity[].class)));
+            BookingEntity.MAX_ID = bookingEntityList.size();
             return bookingEntityList;
         } catch (IOException e) {
             System.err.println("Error while reading bookings from file: " + e.getMessage());

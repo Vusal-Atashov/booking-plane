@@ -45,6 +45,7 @@ public class FlightDaoImpl implements FlightDao {
     public List<FlightEntity> getAllFromFile() {
         try (BufferedReader br = new BufferedReader(new FileReader(FLIGHTS_FILE_PATH))) {
             flightEntityList.addAll(Arrays.asList(MAPPER.readValue(br, FlightEntity[].class)));
+            FlightEntity.MAX_ID = flightEntityList.size();
             return flightEntityList;
         } catch (IOException e) {
             System.err.println("Error while reading flights from file: " + e.getMessage());
