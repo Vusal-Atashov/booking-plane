@@ -2,16 +2,13 @@ package controller;
 
 import dto.FlightDto;
 import services.FlightService;
+import services.FlightServiceImpl;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 public class FlightControllerImpl implements FlightController {
-    private final FlightService flightService;
-
-    public FlightControllerImpl(FlightService flightService) {
-        this.flightService = flightService;
-    }
+    private final FlightService flightService = new FlightServiceImpl();
 
     @Override
     public void saveAllToFile() {
@@ -41,5 +38,9 @@ public class FlightControllerImpl implements FlightController {
     @Override
     public List<FlightDto> getFlightsByCriteria(String destination, LocalDateTime dateTime, int seats) {
         return flightService.getFlightsByCriteria(destination, dateTime, seats);
+    }
+    @Override
+    public List<FlightDto> getNext24HoursFlights(String origin){
+        return flightService.getNext24HoursFlights(origin);
     }
 }

@@ -2,19 +2,14 @@ package services;
 
 import dao.BookingDao;
 import dao.entity.BookingEntity;
+import dao.impl.BookingDaoImpl;
 import dto.BookingDto;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class BookingServiceImpl implements BookingService {
-    private final BookingDao bookingDao;
-
-    public BookingServiceImpl(BookingDao bookingDao) {
-        this.bookingDao = bookingDao;
-    }
-
+    private final BookingDao bookingDao = new BookingDaoImpl();
 
     @Override
     public void saveBooking(BookingDto bookingDto) {
@@ -45,7 +40,6 @@ public class BookingServiceImpl implements BookingService {
     public void cancelBooking(int bookingId) {
         bookingDao.cancelBooking(bookingId);
     }
-
 
     @Override
     public List<BookingDto> getAllBookingsByPassenger(String passengerName) {
