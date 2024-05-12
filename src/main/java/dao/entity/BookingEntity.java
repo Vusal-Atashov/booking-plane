@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class BookingEntity implements Serializable {
-    private static long MAX_ID = 0;
+    public static long MAX_ID = 0;
     private long id;
     private long flightId;
     private List<String> passengerNames;

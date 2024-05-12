@@ -1,5 +1,6 @@
 package controller;
 
+import dto.CriteriaDto;
 import dto.FlightDto;
 import services.FlightService;
 import services.FlightServiceImpl;
@@ -36,8 +37,8 @@ public class FlightControllerImpl implements FlightController {
     }
 
     @Override
-    public List<FlightDto> getFlightsByCriteria(String destination, LocalDateTime dateTime, int seats) {
-        return flightService.getFlightsByCriteria(destination, dateTime, seats);
+    public List<FlightDto> getFlightsByCriteria(CriteriaDto criteria) {
+        return flightService.getFlightsByCriteria(criteria);
     }
     @Override
     public List<FlightDto> getNext24HoursFlights(String origin){

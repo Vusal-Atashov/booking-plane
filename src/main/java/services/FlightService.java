@@ -1,5 +1,6 @@
 package services;
 
+import dto.CriteriaDto;
 import dto.FlightDto;
 
 import java.time.LocalDateTime;
@@ -14,7 +15,7 @@ public interface FlightService {
 
     FlightDto getFlightById(long flightId);
 
-    List<FlightDto> getFlightsByCriteria(String destination, LocalDateTime dateTime, int seats);
+    List<FlightDto> getFlightsByCriteria(CriteriaDto criteria);
 
     void saveFlight(FlightDto flightDto);
 

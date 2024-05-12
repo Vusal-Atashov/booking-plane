@@ -82,6 +82,6 @@ public class FlightDto {
 
     @Override
     public String toString() {
-        return String.format("{id='%s', destination='%s', date='%s', numOfSeats=%d}", id, destination, departureTime, numOfSeats);
+        return String.format("\n{id='%s', destination='%s', date='%s', numOfSeats=%d}", id, destination, departureTime, numOfSeats);
     }
 }
