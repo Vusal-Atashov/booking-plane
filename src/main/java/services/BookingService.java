@@ -1,17 +1,18 @@
 package services;
 
 import dao.entity.BookingEntity;
-import dto.BookingDTO;
+import dto.BookingDto;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 public interface BookingService {
-    void saveBookings(Collection<BookingDTO> bookings);
-    Collection<BookingDTO> getBookingsAll();
+    void saveBooking(BookingDto bookingDto);
+    void saveAllToFile();
+    List<BookingDto> getAllBookings();
+    void getAllFromFile();
     void cancelBooking(int bookingId);
-    List<BookingDTO> getAllBookingsByPassenger(Predicate<BookingEntity> predicate);
-    BookingDTO getOneBookingsBy(Predicate<BookingEntity> predicate);
-
+    List<BookingDto> getAllBookingsByPassenger(String passengerNames);
 }
