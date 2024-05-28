@@ -1,5 +1,6 @@
 package controller;
 
+import dao.entity.Cities;
 import dto.CriteriaDto;
 import dto.FlightDto;
 
@@ -7,9 +8,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface FlightController {
-    void saveAllToFile();
+    List<FlightDto> findByOrigin(String origin);
 
-    void getAllFromFile();
+    void cancelFlight(int flightId);
 
     List<FlightDto> getAllFlights();
 
@@ -19,5 +20,5 @@ public interface FlightController {
 
     List<FlightDto> getFlightsByCriteria(CriteriaDto criteria);
 
-    List<FlightDto> getNext24HoursFlights(String origin);
+    List<FlightDto> getNext24HoursFlights(Cities origin);
 }

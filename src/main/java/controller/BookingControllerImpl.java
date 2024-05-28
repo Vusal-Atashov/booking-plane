@@ -1,22 +1,22 @@
 package controller;
 
+import dao.entity.BookingEntity;
 import dto.BookingDto;
 import services.BookingService;
-import services.BookingServiceImpl;
 
 import java.util.List;
+import java.util.Optional;
 
 public class BookingControllerImpl implements BookingController {
-    private final BookingService bookingService = new BookingServiceImpl();
+    private final BookingService bookingService;
+
+    public BookingControllerImpl(BookingService bookingService) {
+        this.bookingService = bookingService;
+    }
 
     @Override
     public void saveBooking(BookingDto bookingDto) {
         bookingService.saveBooking(bookingDto);
-    }
-
-    @Override
-    public void saveAllToFile() {
-        bookingService.saveAllToFile();
     }
 
     @Override
@@ -25,13 +25,8 @@ public class BookingControllerImpl implements BookingController {
     }
 
     @Override
-    public void getAllFromFile() {
-        bookingService.getAllFromFile();
-    }
-
-    @Override
-    public void cancelBooking(int bookingId) {
-        bookingService.cancelBooking(bookingId);
+    public Optional<BookingEntity> findById(long id) {
+        return bookingService.findById(id);
     }
 
     @Override
@@ -39,4 +34,8 @@ public class BookingControllerImpl implements BookingController {
         return bookingService.getAllBookingsByPassenger(passengerName);
     }
 
+    @Override
+    public void cancelBooking(int bookingId) {
+        bookingService.cancelBooking(bookingId);
+    }
 }

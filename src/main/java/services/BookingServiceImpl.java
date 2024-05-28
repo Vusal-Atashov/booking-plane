@@ -2,53 +2,47 @@ package services;
 
 import dao.BookingDao;
 import dao.entity.BookingEntity;
-import dao.impl.BookingDaoImpl;
 import dto.BookingDto;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 public class BookingServiceImpl implements BookingService {
-    private final BookingDao bookingDao = new BookingDaoImpl();
+    private final BookingDao bookingDao;
+
+    public BookingServiceImpl(BookingDao bookingDao) {
+        this.bookingDao = bookingDao;
+    }
 
     @Override
     public void saveBooking(BookingDto bookingDto) {
-        BookingEntity bookingEntity = new BookingEntity(bookingDto.getFlightId(),
-                bookingDto.getPassengerNames());
+        BookingEntity bookingEntity = new BookingEntity(bookingDto.getFlightId(), bookingDto.getPassengerNames());
         bookingDao.save(bookingEntity);
     }
 
     @Override
-    public void saveAllToFile() {
-        bookingDao.saveAllToFile();
-    }
-
-    @Override
     public List<BookingDto> getAllBookings() {
-        return bookingDao.getAll().stream()
+        return bookingDao.findAll().stream()
                 .map(booking -> new BookingDto(booking.getId(), booking.getFlightId(),
                         booking.getPassengerNames()))
-                .collect(Collectors.toList());
+                .toList();
     }
 
-    @Override
-    public void getAllFromFile() {
-        bookingDao.getAllFromFile();
-    }
-
-    @Override
-    public void cancelBooking(int bookingId) {
-        bookingDao.cancelBooking(bookingId);
+    public Optional<BookingEntity> findById(long id) {
+        return bookingDao.findById(id);
     }
 
     @Override
     public List<BookingDto> getAllBookingsByPassenger(String passengerName) {
-        List<BookingEntity> entities = bookingDao.getAll();
-        var bookingDtos = entities.stream().filter(entity ->
-                entity.getPassengerNames().contains(passengerName)
-        ).map(entity -> new BookingDto(entity.getId(),
-                entity.getFlightId(), entity.getPassengerNames())
-        ).toList();
-        return bookingDtos;
+        return bookingDao.findByFullName(List.of(passengerName)).stream()
+                .map(booking -> new BookingDto(booking.getId(), booking.getFlightId(),
+                        booking.getPassengerNames()))
+                .toList();
+    }
+
+
+    @Override
+    public void cancelBooking(int bookingId) {
+        bookingDao.cancelBooking(bookingId);
     }
 }

@@ -1,17 +1,21 @@
 package dao.entity;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class FlightEntity {
+public class FlightEntity implements Serializable {
+    @Serial
+    private static final long serialVersionUID = -9633656510704585L;
     public static long MAX_ID = 0;
     private long id;
-    private String origin;
-    private String destination;
+    private Cities origin;
+    private Cities destination;
     private LocalDateTime departureTime;
     private int numOfSeats;
 
-    public FlightEntity(String origin, String destination, LocalDateTime departureTime, int numOfSeats) {
+    public FlightEntity(Cities origin, Cities destination, LocalDateTime departureTime, int numOfSeats) {
         this.id = ++MAX_ID;
         this.origin = origin;
         this.destination = destination;
@@ -22,7 +26,7 @@ public class FlightEntity {
     public FlightEntity() {
     }
 
-    public FlightEntity(long id, String origin, String destination, LocalDateTime departureTime, int numOfSeats) {
+    public FlightEntity(long id, Cities origin, Cities destination, LocalDateTime departureTime, int numOfSeats) {
         this.origin = origin;
         this.id = id;
         this.destination = destination;
@@ -34,19 +38,19 @@ public class FlightEntity {
         return id;
     }
 
-    public String getDestination() {
+    public Cities getDestination() {
         return destination;
     }
 
-    public void setDestination(String destination) {
+    public void setDestination(Cities destination) {
         this.destination = destination;
     }
 
-    public String getOrigin() {
+    public Cities getOrigin() {
         return origin;
     }
 
-    public void setOrigin(String origin) {
+    public void setOrigin(Cities origin) {
         this.origin = origin;
     }
 
@@ -81,6 +85,6 @@ public class FlightEntity {
 
     @Override
     public String toString() {
-        return String.format("{id='%s', destination='%s', date='%s', numOfSeats=%d}", id, destination, departureTime, numOfSeats);
+        return String.format("\n"+"id='%s', destination='%s', date='%s', numOfSeats=%d}", id, destination, departureTime, numOfSeats);
     }
 }

@@ -1,5 +1,6 @@
 package dao;
 
+import dao.entity.Cities;
 import dao.entity.FlightEntity;
 
 import java.util.List;
@@ -8,13 +9,11 @@ import java.util.Optional;
 public interface FlightDao {
     void save(FlightEntity entity);
 
-    void saveAll(List<FlightEntity> entities);
+    FlightEntity findById(long id);
 
-    Optional<FlightEntity> getById(long id);
+    List<FlightEntity> findAll();
 
-    List<FlightEntity> getAll();
+    void cancelFlight(long flightId);
 
-    List<FlightEntity> getAllFromFile();
-
-    void saveAllToFile();
+    List<FlightEntity> findByOrigin(String origin);
 }

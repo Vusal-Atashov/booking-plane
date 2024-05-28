@@ -64,7 +64,7 @@ public class BookingDto {
 
     @Override
     public String toString() {
-        return String.format("{id=%d, flightId='%s', passengerNames=%s}", id, flightId, passengerNames);
+        return String.format("\n"+"{id=%d, flightId='%s', passengerNames=%s}", id, flightId, passengerNames);
     }
 }
 

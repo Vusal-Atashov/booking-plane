@@ -1,24 +1,27 @@
 package controller;
 
+import dao.entity.Cities;
 import dto.CriteriaDto;
 import dto.FlightDto;
 import services.FlightService;
-import services.FlightServiceImpl;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class FlightControllerImpl implements FlightController {
-    private final FlightService flightService = new FlightServiceImpl();
+    private final FlightService flightService;
 
-    @Override
-    public void saveAllToFile() {
-        flightService.saveAllToFile();
+    public FlightControllerImpl(FlightService flightService) {
+        this.flightService = flightService;
     }
 
     @Override
-    public void getAllFromFile() {
-        flightService.getAllFromFile();
+    public List<FlightDto> findByOrigin(String origin) {
+        return flightService.findByOrigin(origin);
+    }
+
+    @Override
+    public void cancelFlight(int flightId) {
+        flightService.cancelFlight(flightId);
     }
 
     @Override
@@ -40,8 +43,9 @@ public class FlightControllerImpl implements FlightController {
     public List<FlightDto> getFlightsByCriteria(CriteriaDto criteria) {
         return flightService.getFlightsByCriteria(criteria);
     }
+
     @Override
-    public List<FlightDto> getNext24HoursFlights(String origin){
+    public List<FlightDto> getNext24HoursFlights(Cities origin) {
         return flightService.getNext24HoursFlights(origin);
     }
 }

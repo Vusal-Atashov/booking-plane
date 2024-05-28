@@ -1,5 +1,6 @@
 package console;
 
+import dao.entity.Cities;
 import dto.BookingDto;
 import dto.CriteriaDto;
 import dto.FlightDto;
@@ -17,9 +18,9 @@ public class BookingAndFlight {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         FlightDto flightDTO = new FlightDto();
         System.out.println("Enter flight origin: ");
-        flightDTO.setOrigin(scanner.nextLine());
+        flightDTO.setOrigin(Cities.getCity(scanner.nextLine()));
         System.out.println("Enter flight destination: ");
-        flightDTO.setDestination(scanner.nextLine());
+        flightDTO.setDestination(Cities.getCity(scanner.nextLine()));
         System.out.println("Enter flight time in format (yyyy-MM-dd HH:mm): ");
         flightDTO.setDepartureTime(LocalDateTime.parse(scanner.nextLine(), formatter));
         System.out.println("Enter total number of seats: ");
@@ -28,9 +29,10 @@ public class BookingAndFlight {
         return flightDTO;
     }
 
-    public static String getOrigin() {
+    public static Cities getOrigin() {
+
         System.out.println("Enter flight origin: ");
-        return scanner.nextLine();
+        return Cities.getCity(scanner.next());
     }
 
     public static CriteriaDto getFlightInfo() {
@@ -41,7 +43,7 @@ public class BookingAndFlight {
         LocalDateTime time = LocalDateTime.parse(scanner.nextLine(), formatter);
         System.out.print("Enter the number of seats: ");
         int seats = Integer.parseInt(scanner.nextLine());
-        return new CriteriaDto(destination, time, seats);
+        return new CriteriaDto(Cities.getCity(destination), time, seats);
     }
 
     public static BookingDto createBooking(int id, int numberOfSeats) {
