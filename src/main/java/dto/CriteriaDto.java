@@ -1,27 +1,29 @@
 package dto;
 
+import dao.entity.Cities;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class CriteriaDto {
-    String destination;
+    Cities destination;
     LocalDateTime time;
     int seats;
 
     public CriteriaDto() {
     }
 
-    public CriteriaDto(String destination, LocalDateTime time, int seats) {
+    public CriteriaDto(Cities destination, LocalDateTime time, int seats) {
         this.destination = destination;
         this.time = time;
         this.seats = seats;
     }
 
-    public String getDestination() {
+    public Cities getDestination() {
         return destination;
     }
 
-    public void setDestination(String destination) {
+    public void setDestination(Cities destination) {
         this.destination = destination;
     }
 
@@ -46,7 +48,7 @@ public class CriteriaDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CriteriaDto that = (CriteriaDto) o;
-        return seats == that.seats && Objects.equals(destination, that.destination) && Objects.equals(time, that.time);
+        return seats == that.seats && destination == that.destination && Objects.equals(time, that.time);
     }
 
     @Override

@@ -5,18 +5,14 @@ import dao.entity.BookingEntity;
 import java.util.List;
 import java.util.Optional;
 
-public interface BookingDao{
+public interface BookingDao {
     void save(BookingEntity entity);
 
-    void saveAll(List<BookingEntity> entities);
+    Optional<BookingEntity> findById(long id);
 
-    Optional<BookingEntity> getById(long id);
-    List<BookingEntity> getByFullName(List<String> passengerNames);
+    List<BookingEntity> findByFullName(List<String> passengerNames);
 
-    List<BookingEntity> getAll();
+    List<BookingEntity> findAll();
 
-    List<BookingEntity> getAllFromFile();
-
-    void saveAllToFile();
-    void cancelBooking(int bookingId);
+    void cancelBooking(long bookingId);
 }

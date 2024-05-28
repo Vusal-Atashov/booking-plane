@@ -4,22 +4,21 @@ import controller.BookingController;
 import controller.BookingControllerImpl;
 import controller.FlightController;
 import controller.FlightControllerImpl;
+import dao.impl.BookingFileDao;
+import dao.impl.FlightDaoImpl;
 import dto.CriteriaDto;
-import dto.FlightDto;
+import services.BookingServiceImpl;
+import services.FlightServiceImpl;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleManager {
-    private final FlightController flightController = new FlightControllerImpl();
-    private final BookingController bookingController = new BookingControllerImpl();
+    private final FlightController flightController = new FlightControllerImpl(new FlightServiceImpl(new FlightDaoImpl()));
+    private final BookingController bookingController = new BookingControllerImpl(new BookingServiceImpl(new BookingFileDao()));
     private final Scanner scanner = new Scanner(System.in);
 
     public void run() {
-        bookingController.getAllFromFile();
-        flightController.getAllFromFile();
+       // flightController.getAllFromFile();
         boolean exit = false;
         while (!exit) {
             displayMainMenu();
@@ -50,8 +49,7 @@ public class ConsoleManager {
                     break;
                 case 6:
                     exit = true;
-                    bookingController.saveAllToFile();
-                    flightController.saveAllToFile();
+                   // flightController.saveAllToFile();
                     break;
                 default:
                     System.out.println("Invalid choice. Please try again.");

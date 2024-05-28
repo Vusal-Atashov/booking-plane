@@ -1,18 +1,24 @@
 package dto;
 
 
+import dao.entity.Cities;
+import dao.entity.FlightEntity;
+
+import java.io.Serial;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class FlightDto {
+    @Serial
+    private static final long serialVersionUID =1L;
     public static long MAX_ID = 0;
     private long id;
-    private String origin;
-    private String destination;
+    private Cities origin;
+    private Cities destination;
     private LocalDateTime departureTime;
     private int numOfSeats;
 
-    public FlightDto(String origin, String destination, LocalDateTime departureTime, int numOfSeats) {
+    public FlightDto(Cities origin, Cities destination, LocalDateTime departureTime, int numOfSeats) {
         this.id = ++MAX_ID;
         this.origin = origin;
         this.destination = destination;
@@ -23,7 +29,7 @@ public class FlightDto {
     public FlightDto() {
     }
 
-    public FlightDto(long id, String origin, String destination, LocalDateTime departureTime, int numOfSeats) {
+    public FlightDto(long id, Cities origin, Cities destination, LocalDateTime departureTime, int numOfSeats) {
         this.origin = origin;
         this.id = id;
         this.destination = destination;
@@ -35,19 +41,19 @@ public class FlightDto {
         return id;
     }
 
-    public String getDestination() {
+    public Cities getDestination() {
         return destination;
     }
 
-    public void setDestination(String destination) {
+    public void setDestination(Cities destination) {
         this.destination = destination;
     }
 
-    public String getOrigin() {
+    public Cities getOrigin() {
         return origin;
     }
 
-    public void setOrigin(String origin) {
+    public void setOrigin(Cities origin) {
         this.origin = origin;
     }
 
@@ -71,8 +77,8 @@ public class FlightDto {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        FlightDto that = (FlightDto) o;
-        return Objects.equals(id, that.id);
+        FlightDto flightDto = (FlightDto) o;
+        return id == flightDto.id && numOfSeats == flightDto.numOfSeats && origin == flightDto.origin && destination == flightDto.destination && Objects.equals(departureTime, flightDto.departureTime);
     }
 
     @Override
@@ -82,6 +88,6 @@ public class FlightDto {
 
     @Override
     public String toString() {
-        return String.format("\n{id='%s', destination='%s', date='%s', numOfSeats=%d}", id, destination, departureTime, numOfSeats);
+        return "\n"+"{id=%d, origin=%s, destination=%s, departureTime=%s, numOfSeats=%d}".formatted(id, origin, destination, departureTime, numOfSeats);
     }
 }
