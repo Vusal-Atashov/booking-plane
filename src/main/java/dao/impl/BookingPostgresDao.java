@@ -1,30 +1,33 @@
 package dao.impl;
 
 import dao.BookingDao;
-import dao.ConnectionDataBase;
 import dao.entity.BookingEntity;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class BookingPostgresDao implements BookingDao {
     private static final String getAllBookingSql =
-            "SELECT booking.id, booking.flightId, passenger_name FROM booking LEFT JOIN passengerName pN ON booking.id = pN.bookingId;";
+            "SELECT booking.id, booking.flight_id, full_name FROM booking JOIN bookings_passengers ON booking.id =bookings_passengers.booking_id JOIN passengerON passenger.id =bookings_passengers.passenger_id;";
     private static final String getBookingByIdSql = "SELECT * FROM booking WHERE id = ?;";
-    private static final String createBookingSql = "INSERT INTO booking(flightid) values (?);";
-    private static final String createBookingByPassengerNameSql = "INSERT INTO passengername(bookingId,passenger_name) values (?,?);";
+    private static final String createBookingSql = "INSERT INTO booking (flight_id) VALUES (?);";
+    private static final String createPassengerNameSql = "INSERT INTO passenger (full_name) VALUES (?);";
+    private static final String createBookingByPassengerIdSql = "INSERT INTO bookings_passengers (booking_id, passenger_id) VALUES (?, ?);";
     private static final String deleteBookingSql = "DELETE FROM booking where id = ?";
     private static final String deletePassengerNameSql = "DELETE FROM passengername WHERE bookingId = ?;";
-    private static final ConnectionDataBase connection = new ConnectionDataBase();
+    private static final String updateFlightSql = "UPDATE flight SET free_seats = ? WHERE id = ?;";
+
 
     @Override
     public List<BookingEntity> findByFullName(List<String> passengerNames) {
         List<BookingEntity> bookingEntities = new ArrayList<>();
-        try (PreparedStatement query = connection.getConnection().prepareStatement(getAllBookingSql)) {
+        try (Connection conn = DriverManager.getConnection(
+                "jdbc:postgresql://localhost:5432/postgres",
+                "postgres",
+                "postgres");
+             PreparedStatement query = conn.prepareStatement(getAllBookingSql)) {
             ResultSet resultSet = query.executeQuery();
             while (resultSet.next()) {
                 long id = resultSet.getLong("id");
@@ -34,8 +37,7 @@ public class BookingPostgresDao implements BookingDao {
                     bookingEntities.add(new BookingEntity(id, flightId, List.of(passengerName.split(","))));
                 }
             }
-        } catch (
-                SQLException e) {
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         return bookingEntities;
@@ -44,13 +46,17 @@ public class BookingPostgresDao implements BookingDao {
     @Override
     public List<BookingEntity> findAll() {
         List<BookingEntity> bookingEntities = new ArrayList<>();
-        try (PreparedStatement query = connection.getConnection().prepareStatement(getAllBookingSql)) {
+        try (Connection conn = DriverManager.getConnection(
+                "jdbc:postgresql://localhost:5432/postgres",
+                "postgres",
+                "postgres");
+             PreparedStatement query = conn.prepareStatement(getAllBookingSql)) {
             ResultSet resultSet = query.executeQuery();
             while (resultSet.next()) {
                 long id = resultSet.getLong("id");
                 long flightId = resultSet.getLong("flightid");
-                String passengerNames = resultSet.getString("passenger_name");
-                bookingEntities.add(new BookingEntity(id, flightId, List.of(passengerNames.split(","))));
+                String passengerName = resultSet.getString("passenger_name");
+                bookingEntities.add(new BookingEntity(id, flightId, List.of(passengerName.split(","))));
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -60,16 +66,28 @@ public class BookingPostgresDao implements BookingDao {
 
     @Override
     public void save(BookingEntity entity) {
-        try (PreparedStatement query = connection.getConnection().prepareStatement(createBookingSql);
-             PreparedStatement queryName = connection.getConnection().prepareStatement(createBookingByPassengerNameSql);) {
-            for (String passengerName : entity.getPassengerNames()) {
-                queryName.setLong(1, entity.getFlightId());
-                queryName.setString(2, passengerName);
-                queryName.executeUpdate();
-            }
+        try (Connection conn = DriverManager.getConnection(
+                "jdbc:postgresql://localhost:5432/postgres",
+                "postgres",
+                "postgres");
+             PreparedStatement query = conn.prepareStatement(createBookingSql)) {
+            PreparedStatement updateFlightQuery = conn.prepareStatement(updateFlightSql);
+            updateFlightQuery.setInt(1, entity.getPassengerNames().size());
+            updateFlightQuery.setLong(2, entity.getFlightId());
+            updateFlightQuery.executeUpdate();
             query.setLong(1, entity.getFlightId());
-            int affectedRows = query.executeUpdate();
-            System.out.println(affectedRows);
+            query.executeUpdate();
+            PreparedStatement queryName = conn.prepareStatement(createPassengerNameSql);
+            for (String name : entity.getPassengerNames()) {
+                queryName.setString(1, name);
+                queryName.executeUpdate();
+                PreparedStatement queryBooking = conn.prepareStatement(createBookingByPassengerIdSql);
+                queryBooking.setLong(1, entity.getId());
+                queryBooking.setLong(2, entity.getFlightId());
+                queryBooking.executeUpdate();
+            }
+
+
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -77,30 +95,38 @@ public class BookingPostgresDao implements BookingDao {
 
     @Override
     public Optional<BookingEntity> findById(long id) {
-        try (PreparedStatement query = connection.getConnection().prepareStatement(getBookingByIdSql);) {
+        BookingEntity bookingEntity = null;
+        try (Connection conn = DriverManager.getConnection(
+                "jdbc:postgresql://localhost:5432/postgres",
+                "postgres",
+                "postgres");
+             PreparedStatement query = conn.prepareStatement(getBookingByIdSql)) {
             query.setLong(1, id);
             ResultSet resultSet = query.executeQuery();
-            if (resultSet.next()) {
-                long id2 = resultSet.getLong("id");
+            while (resultSet.next()) {
+                long bookingId = resultSet.getLong("id");
                 long flightId = resultSet.getLong("flightid");
-                String passengerNames = resultSet.getString("passengernames");
-                return Optional.of(new BookingEntity(id2, flightId, List.of(passengerNames.split(","))));
+                String passengerName = resultSet.getString("passenger_name");
+                bookingEntity = new BookingEntity(bookingId, flightId, List.of(passengerName.split(",")));
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return Optional.empty();
+        return Optional.ofNullable(bookingEntity);
     }
 
     @Override
     public void cancelBooking(long bookingId) {
-        try (PreparedStatement query = connection.getConnection().prepareStatement(deleteBookingSql);
-             PreparedStatement queryName = connection.getConnection().prepareStatement(deletePassengerNameSql);) {
+        try (Connection conn = DriverManager.getConnection(
+                "jdbc:postgresql://localhost:5432/postgres",
+                "postgres",
+                "postgres");
+             PreparedStatement query = conn.prepareStatement(deleteBookingSql)) {
             query.setLong(1, bookingId);
+            query.executeUpdate();
+            PreparedStatement queryName = conn.prepareStatement(deletePassengerNameSql);
             queryName.setLong(1, bookingId);
             queryName.executeUpdate();
-            int affectedRows = query.executeUpdate();
-            System.out.println(affectedRows);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }

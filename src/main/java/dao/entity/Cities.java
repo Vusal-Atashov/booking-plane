@@ -15,7 +15,7 @@ public enum Cities {
     public static Cities getCity(String name) {
         try {
             for (Cities city : values()) {
-                if (city.name().equalsIgnoreCase(name)) {
+                if (city.name().equalsIgnoreCase(name.toUpperCase())) {
                     return city;
                 }
             }
