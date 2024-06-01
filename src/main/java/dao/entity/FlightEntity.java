@@ -27,8 +27,8 @@ public class FlightEntity implements Serializable {
     }
 
     public FlightEntity(long id, Cities origin, Cities destination, LocalDateTime departureTime, int numOfSeats) {
-        this.origin = origin;
         this.id = id;
+        this.origin = origin;
         this.destination = destination;
         this.departureTime = departureTime;
         this.numOfSeats = numOfSeats;
@@ -85,6 +85,6 @@ public class FlightEntity implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("\n"+"id='%s', destination='%s', date='%s', numOfSeats=%d}", id, destination, departureTime, numOfSeats);
+        return String.format("\n" + "id='%s', destination='%s', date='%s', numOfSeats=%d}", id, destination, departureTime, numOfSeats);
     }
 }
