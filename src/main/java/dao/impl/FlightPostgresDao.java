@@ -19,7 +19,7 @@ public class FlightPostgresDao implements FlightDao {
     private static final String findFlightById = "SELECT * FROM flight WHERE id = ?;";
     private static final String cancelFlightSql = "DELETE FROM flight WHERE id = ?;";
     private static final String findFlightByOrigin = "SELECT * FROM flight WHERE origin = ?;";
-    private static final String updateFlightSql = "UPDATE flight SET free_seats = ? WHERE id = ?;";
+
 
     @Override
     public void save(FlightEntity entity) {

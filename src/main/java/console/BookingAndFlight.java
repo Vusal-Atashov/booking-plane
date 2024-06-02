@@ -22,10 +22,14 @@ public class BookingAndFlight {
         System.out.println("Enter flight destination: ");
         flightDTO.setDestination(Cities.getCity(scanner.nextLine()));
         System.out.println("Enter flight time in format (yyyy-MM-dd HH:mm): ");
-        flightDTO.setDepartureTime(LocalDateTime.parse(scanner.nextLine(), formatter));
-        System.out.println("Enter total number of seats: ");
-        flightDTO.setNumOfSeats(scanner.nextInt());
-        scanner.nextLine();
+        try {
+            flightDTO.setDepartureTime(LocalDateTime.parse(scanner.nextLine(), formatter));
+            System.out.println("Enter total number of seats: ");
+            flightDTO.setNumOfSeats(scanner.nextInt());
+            scanner.nextLine();
+        } catch (Exception e) {
+            System.out.println("Invalid date format");
+        }
         return flightDTO;
     }
 
@@ -40,10 +44,15 @@ public class BookingAndFlight {
         System.out.print("Enter the destination: ");
         String destination = scanner.nextLine();
         System.out.print("Enter the date (yyyy-MM-dd HH:mm): ");
-        LocalDateTime time = LocalDateTime.parse(scanner.nextLine(), formatter);
-        System.out.print("Enter the number of seats: ");
-        int seats = Integer.parseInt(scanner.nextLine());
-        return new CriteriaDto(Cities.getCity(destination), time, seats);
+        try {
+            LocalDateTime time = LocalDateTime.parse(scanner.nextLine(), formatter);
+            System.out.print("Enter the number of seats: ");
+            int seats = Integer.parseInt(scanner.nextLine());
+            return new CriteriaDto(Cities.getCity(destination), time, seats);
+        } catch (Exception e) {
+            System.out.println("Invalid date format");
+        }
+           return null;
     }
 
     public static BookingDto createBooking(int id, int numberOfSeats) {

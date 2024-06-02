@@ -3,7 +3,6 @@ package dao.impl;
 import dao.AppendingObjectInputStream;
 import dao.AppendingObjectOutputStream;
 import dao.FlightDao;
-import dao.entity.BookingEntity;
 import dao.entity.Cities;
 import dao.entity.FlightEntity;
 
@@ -17,9 +16,8 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
-public class FlightDaoImpl implements FlightDao {
+public class FlightFileDao implements FlightDao {
     private final String RESOURCE_PATH = "src/main/java/resource/";
     private final String FLIGHTS_FILE_PATH = RESOURCE_PATH + "flights.bin";
     private final File file = new File(FLIGHTS_FILE_PATH);

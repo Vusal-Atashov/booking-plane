@@ -40,7 +40,6 @@ public class BookingServiceImpl implements BookingService {
                 .toList();
     }
 
-
     @Override
     public void cancelBooking(int bookingId) {
         bookingDao.cancelBooking(bookingId);

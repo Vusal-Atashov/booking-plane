@@ -1,10 +1,8 @@
 package dao;
 
-import dao.entity.Cities;
 import dao.entity.FlightEntity;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface FlightDao {
     void save(FlightEntity entity);

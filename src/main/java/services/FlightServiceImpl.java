@@ -8,6 +8,7 @@ import dto.FlightDto;
 import exception.ResourceNotFoundException;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FlightServiceImpl implements FlightService {
@@ -62,26 +63,37 @@ public class FlightServiceImpl implements FlightService {
     @Override
     public List<FlightDto> getFlightsByCriteria(CriteriaDto criteria) {
         List<FlightEntity> entities = flightDao.findAll();
-        return entities.stream().filter(entity ->
-                entity.getDestination().equals(criteria.getDestination()) &&
-                        entity.getDepartureTime().equals(criteria.getTime()) &&
-                        entity.getNumOfSeats() >= criteria.getSeats()
-        ).map(entity -> new FlightDto(entity.getId(), entity.getOrigin(),
-                entity.getDestination(), entity.getDepartureTime(),
-                entity.getNumOfSeats())
-        ).toList();
+        try {
+            return entities.stream().filter(entity ->
+                    entity.getDestination().equals(criteria.getDestination()) &&
+                            entity.getDepartureTime().equals(criteria.getTime()) &&
+                            entity.getNumOfSeats() >= criteria.getSeats()
+            ).map(entity -> new FlightDto(entity.getId(), entity.getOrigin(),
+                    entity.getDestination(), entity.getDepartureTime(),
+                    entity.getNumOfSeats())
+            ).toList();
+        } catch (NullPointerException e) {
+            System.out.println(e.getMessage());
+            return new ArrayList<>();
+        }
+
     }
 
     @Override
     public List<FlightDto> getNext24HoursFlights(Cities origin) {
-        List<FlightEntity> entities = flightDao.findAll();
-        return entities.stream().filter(entity ->
-                entity.getOrigin().equals(origin) &&
-                        entity.getDepartureTime().isAfter(LocalDateTime.now()) &&
-                        entity.getDepartureTime().isBefore(LocalDateTime.now().plusHours(24))
-        ).map(entity -> new FlightDto(entity.getId(), entity.getOrigin(),
-                entity.getDestination(), entity.getDepartureTime(),
-                entity.getNumOfSeats())
-        ).toList();
+        try {
+            List<FlightEntity> entities = flightDao.findAll();
+            return entities.stream().filter(entity ->
+                    entity.getOrigin().equals(origin) &&
+                            entity.getDepartureTime().isAfter(LocalDateTime.now()) &&
+                            entity.getDepartureTime().isBefore(LocalDateTime.now().plusHours(24))
+            ).map(entity -> new FlightDto(entity.getId(), entity.getOrigin(),
+                    entity.getDestination(), entity.getDepartureTime(),
+                    entity.getNumOfSeats())
+            ).toList();
+        } catch (NullPointerException e) {
+            System.out.println(e.getMessage());
+            return new ArrayList<>();
+        }
     }
 }
