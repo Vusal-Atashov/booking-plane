@@ -13,21 +13,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FlightPostgresDao implements FlightDao {
-
-    private static final String addFlightSql = "INSERT INTO flight (origin, destination, departure_time, free_seats) VALUES (?, ?, ?, ?)";
-    private static final String findAllFlightSql = "SELECT * FROM flight;";
-    private static final String findFlightById = "SELECT * FROM flight WHERE id = ?;";
-    private static final String cancelFlightSql = "DELETE FROM flight WHERE id = ?;";
-    private static final String findFlightByOrigin = "SELECT * FROM flight WHERE origin = ?;";
-
-
     @Override
     public void save(FlightEntity entity) {
         try (Connection conn = DriverManager.getConnection(
                 "jdbc:postgresql://localhost:5432/postgres",
                 "postgres",
                 "postgres");
-             PreparedStatement query = conn.prepareStatement(addFlightSql)) {
+             PreparedStatement query = conn.prepareStatement("INSERT INTO flight (origin, destination, departure_time, " +
+                     "free_seats) VALUES (?, ?, ?, ?)")) {
             query.setString(1, entity.getOrigin().name());
             query.setString(2, entity.getDestination().name());
             query.setTimestamp(3, java.sql.Timestamp.valueOf(entity.getDepartureTime()));
@@ -46,7 +39,7 @@ public class FlightPostgresDao implements FlightDao {
                 "jdbc:postgresql://localhost:5432/postgres",
                 "postgres",
                 "postgres");
-             PreparedStatement query = conn.prepareStatement(findFlightById)) {
+             PreparedStatement query = conn.prepareStatement("SELECT * FROM flight WHERE id = ?;")) {
             query.setLong(1, id);
             ResultSet resultSet = query.executeQuery();
             while (resultSet.next()) {
@@ -70,7 +63,7 @@ public class FlightPostgresDao implements FlightDao {
                 "jdbc:postgresql://localhost:5432/postgres",
                 "postgres",
                 "postgres");
-             PreparedStatement query = conn.prepareStatement(findAllFlightSql)) {
+             PreparedStatement query = conn.prepareStatement("SELECT * FROM flight;")) {
             ResultSet resultSet = query.executeQuery();
             while (resultSet.next()) {
                 long flightId = resultSet.getLong("id");
@@ -92,7 +85,7 @@ public class FlightPostgresDao implements FlightDao {
                 "jdbc:postgresql://localhost:5432/postgres",
                 "postgres",
                 "postgres");
-             PreparedStatement query = conn.prepareStatement(cancelFlightSql)) {
+             PreparedStatement query = conn.prepareStatement("DELETE FROM flight WHERE id = ?;")) {
             query.setLong(1, flightId);
             query.executeUpdate();
         } catch (Exception e) {
@@ -108,7 +101,7 @@ public class FlightPostgresDao implements FlightDao {
                 "jdbc:postgresql://localhost:5432/postgres",
                 "postgres",
                 "postgres");
-             PreparedStatement query = conn.prepareStatement(findFlightByOrigin)) {
+             PreparedStatement query = conn.prepareStatement("SELECT * FROM flight WHERE origin = ?;")) {
             query.setString(1, origin.toUpperCase());
             ResultSet resultSet = query.executeQuery();
             while (resultSet.next()) {
