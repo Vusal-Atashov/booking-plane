@@ -1,10 +1,12 @@
 package dto;
 
+import java.io.Serial;
 import java.util.List;
 import java.util.Objects;
 
 public class BookingDto {
-
+    @Serial
+    private static final long serialVersionUID =1L;
     private static long MAX_ID = 0;
     private long id;
     private long flightId;

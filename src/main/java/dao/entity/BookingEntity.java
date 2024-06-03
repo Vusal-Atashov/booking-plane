@@ -7,7 +7,7 @@ import java.util.Objects;
 
 public class BookingEntity implements Serializable {
     @Serial
-    private static final long serialVersionUID = -92233656510704585L;
+    private static final long serialVersionUID = 1L;
     public static long MAX_ID = 0;
     private long id;
     private long flightId;
@@ -67,6 +67,6 @@ public class BookingEntity implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("\n"+"{id=%d, flightId='%s', passengerNames=%s}", id, flightId, passengerNames);
+        return String.format("\n"+"{id=%d, flightId='%s', passengerNames=%s}\n", id, flightId, passengerNames);
     }
 }

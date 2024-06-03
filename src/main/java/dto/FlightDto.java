@@ -2,7 +2,6 @@ package dto;
 
 
 import dao.entity.Cities;
-import dao.entity.FlightEntity;
 
 import java.io.Serial;
 import java.time.LocalDateTime;

@@ -7,7 +7,7 @@ import java.util.Objects;
 
 public class FlightEntity implements Serializable {
     @Serial
-    private static final long serialVersionUID = -9633656510704585L;
+    private static final long serialVersionUID = 1L;
     public static long MAX_ID = 0;
     private long id;
     private Cities origin;
@@ -23,7 +23,7 @@ public class FlightEntity implements Serializable {
         this.numOfSeats = numOfSeats;
     }
 
-    public FlightEntity() {
+    public FlightEntity(long l, int i) {
     }
 
     public FlightEntity(long id, Cities origin, Cities destination, LocalDateTime departureTime, int numOfSeats) {

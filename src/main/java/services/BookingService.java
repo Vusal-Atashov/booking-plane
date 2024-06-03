@@ -10,13 +10,11 @@ import java.util.function.Predicate;
 
 public interface BookingService {
     void saveBooking(BookingDto bookingDto);
+
     Optional<BookingEntity> findById(long id);
 
-
-    //    void saveAllToFile();
     List<BookingDto> getAllBookings();
 
-    //    void getAllFromFile();
     void cancelBooking(int bookingId);
 
     List<BookingDto> getAllBookingsByPassenger(String passengerNames);

@@ -12,7 +12,7 @@ public class AppendingObjectInputStream extends ObjectInputStream {
 
     @Override
     protected void readStreamHeader() throws IOException {
-        // Do nothing to avoid reading a header in the middle of the stream
+        super.readStreamHeader();
     }
 
     @Override

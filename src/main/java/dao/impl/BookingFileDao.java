@@ -24,7 +24,7 @@ public class BookingFileDao implements BookingDao {
     private final File file = new File(BOOKING_FILE_PATH);
 
     public void save(BookingEntity entity) {
-        FlightDaoImpl flightDao = new FlightDaoImpl();
+        FlightFileDao flightDao = new FlightFileDao();
         FlightEntity flightEntity = flightDao.findById(entity.getFlightId());
         flightDao.cancelFlight(flightEntity.getId());
         int numOfSeats = flightEntity.getNumOfSeats() - entity.getPassengerNames().size();
@@ -104,7 +104,7 @@ public class BookingFileDao implements BookingDao {
             } catch (IOException e) {
                 System.err.println("Error while saving booking to file: " + e.getMessage());
             }
-            FlightDaoImpl flightDao = new FlightDaoImpl();
+            FlightFileDao flightDao = new FlightFileDao();
             FlightEntity flightEntity = flightDao.findById(bookingEntity.getFlightId());
             flightDao.cancelFlight(flightEntity.getId());
             flightEntity.setNumOfSeats(flightEntity.getNumOfSeats() + bookingEntity.getPassengerNames().size());
