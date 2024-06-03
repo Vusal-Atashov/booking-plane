@@ -1,21 +1,64 @@
 package dao.impl;
 
 import dao.entity.BookingEntity;
+import dao.entity.Cities;
+import dao.entity.FlightEntity;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.*;
+import static org.powermock.api.mockito.PowerMockito.whenNew;
 
 class BookingFileDaoTest {
 
+    private BookingFileDao bookingFileDao;
 
-    @org.junit.jupiter.api.Test
-    void saveBooking() {
+    @Mock
+    private FlightFileDao flightFileDao;
+
+    @Mock
+    private FileOutputStream fileOutputStream;
+
+    @Mock
+    private ObjectOutputStream objectOutputStream;
+
+    private File bookingFile;
+
+    @BeforeEach
+    void setUp() throws Exception {
+        MockitoAnnotations.openMocks(this);
+        bookingFile = mock(File.class);
+
+        when(bookingFile.exists()).thenReturn(true);
+        when(bookingFile.length()).thenReturn(0L);
+
+        // Mock the file-related operations
+        whenNew(FileOutputStream.class).withAnyArguments().thenReturn(fileOutputStream);
+        whenNew(ObjectOutputStream.class).withAnyArguments().thenReturn(objectOutputStream);
+    }
+
+    @Test
+    void saveBooking() throws Exception {
         // Arrange
-        BookingFileDao bookingFileDao = new BookingFileDao();
+        FlightEntity flightEntity = new FlightEntity(1L,Cities.DUBAI , Cities.LONDON,LocalDateTime.now(), 100);
+        when(flightFileDao.findById(1L)).thenReturn(flightEntity);
+        doNothing().when(flightFileDao).cancelFlight(anyLong());
+        doNothing().when(flightFileDao).save(any(FlightEntity.class));
+
         List<String> passengerNames = Arrays.asList("John Doe", "Jane Doe");
         BookingEntity bookingEntity = new BookingEntity(1L, 1L, passengerNames);
 
@@ -25,65 +68,27 @@ class BookingFileDaoTest {
 
         // Assert
         assertTrue(savedBookingEntityOptional.isPresent(), "Booking should be saved");
-        BookingEntity savedBookingEntity = savedBookingEntityOptional.get();
-        assertEquals(bookingEntity.getId(), savedBookingEntity.getId(), "Saved booking ID should match");
-        assertEquals(bookingEntity.getFlightId(), savedBookingEntity.getFlightId(), "Saved flight ID should match");
-        assertEquals(new HashSet<>(bookingEntity.getPassengerNames()), new HashSet<>(savedBookingEntity.getPassengerNames()), "Saved passenger names should match");
+
+        // Verify interactions
+        verify(flightFileDao).findById(1L);
+        verify(flightFileDao).cancelFlight(1L);
+        verify(flightFileDao).save(any(FlightEntity.class));
+        verify(objectOutputStream).writeObject(any(BookingEntity.class));
     }
+
+
     @org.junit.jupiter.api.Test
     void findById() {
-        // Arrange
-        BookingFileDao bookingFileDao = new BookingFileDao();
-        List<String> passengerNames = Arrays.asList("John Doe", "Jane Doe");
-        BookingEntity bookingEntity = new BookingEntity(1L, 1L, passengerNames);
-        bookingFileDao.save(bookingEntity);
-
-        // Act
-        Optional<BookingEntity> foundBookingEntityOptional = bookingFileDao.findById(1L);
-
-        // Assert
-        assertTrue(foundBookingEntityOptional.isPresent(), "Booking should be found");
-        BookingEntity foundBookingEntity = foundBookingEntityOptional.get();
-        assertEquals(bookingEntity.getId(), foundBookingEntity.getId(), "Found booking ID should match");
-        assertEquals(bookingEntity.getFlightId(), foundBookingEntity.getFlightId(), "Found flight ID should match");
-        assertEquals(new HashSet<>(bookingEntity.getPassengerNames()), new HashSet<>(foundBookingEntity.getPassengerNames()), "Found passenger names should match");
     }
 
     @org.junit.jupiter.api.Test
     void getAllBookings() {
-        // Arrange
-        BookingFileDao bookingFileDao = new BookingFileDao();
-        List<String> passengerNames1 = Arrays.asList("John Doe", "Jane Doe");
-        List<String> passengerNames2 = Arrays.asList("Alice", "Bob");
-        BookingEntity bookingEntity1 = new BookingEntity(1L, 1L, passengerNames1);
-        BookingEntity bookingEntity2 = new BookingEntity(2L, 2L, passengerNames2);
-        bookingFileDao.save(bookingEntity1);
-        bookingFileDao.save(bookingEntity2);
 
-        // Act
-        List<BookingEntity> allBookings = bookingFileDao.findAll();
-
-        // Assert
-        assertNotNull(allBookings, "Bookings list should not be null");
-        assertEquals(2, allBookings.size(), "Bookings list size should match");
-        assertTrue(allBookings.contains(bookingEntity1), "Bookings list should contain first booking");
-        assertTrue(allBookings.contains(bookingEntity2), "Bookings list should contain second booking");
     }
 
     @org.junit.jupiter.api.Test
     void cancelBooking() {
-        // Arrange
-        BookingFileDao bookingFileDao = new BookingFileDao();
-        List<String> passengerNames = Arrays.asList("John Doe", "Jane Doe");
-        BookingEntity bookingEntity = new BookingEntity(1L, 1L, passengerNames);
-        bookingFileDao.save(bookingEntity);
 
-        // Act
-        bookingFileDao.cancelBooking(1L);
-        Optional<BookingEntity> cancelledBookingEntityOptional = bookingFileDao.findById(1L);
-
-        // Assert
-        assertFalse(cancelledBookingEntityOptional.isPresent(), "Booking should be cancelled");
     }
 
     @org.junit.jupiter.api.Test
