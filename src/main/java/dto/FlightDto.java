@@ -3,12 +3,13 @@ package dto;
 
 import dao.entity.Cities;
 
-import java.io.Serial;
+
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class FlightDto {
-    @Serial
+public class FlightDto implements Serializable {
+
     private static final long serialVersionUID =1L;
     public static long MAX_ID = 0;
     private long id;
@@ -87,6 +88,6 @@ public class FlightDto {
 
     @Override
     public String toString() {
-        return "\n"+"{id=%d, origin=%s, destination=%s, departureTime=%s, numOfSeats=%d}".formatted(id, origin, destination, departureTime, numOfSeats);
+       return String.format("\n"+"{id=%d, origin='%s', destination='%s', departureTime=%s, numOfSeats=%d}\n", id, origin, destination, departureTime, numOfSeats);
     }
 }

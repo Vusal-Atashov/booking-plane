@@ -1,11 +1,11 @@
 package dto;
 
-import java.io.Serial;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
-public class BookingDto {
-    @Serial
+public class BookingDto  implements Serializable {
+
     private static final long serialVersionUID =1L;
     private static long MAX_ID = 0;
     private long id;

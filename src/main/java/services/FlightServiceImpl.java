@@ -10,6 +10,7 @@ import exception.ResourceNotFoundException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class FlightServiceImpl implements FlightService {
     private final FlightDao flightDao;
@@ -37,7 +38,7 @@ public class FlightServiceImpl implements FlightService {
                 .map(flight -> new FlightDto(flight.getId(), flight.getOrigin(),
                         flight.getDestination(), flight.getDepartureTime(),
                         flight.getNumOfSeats()))
-                .toList();
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -57,7 +58,7 @@ public class FlightServiceImpl implements FlightService {
                 .map(flight -> new FlightDto(flight.getId(), flight.getOrigin(),
                         flight.getDestination(), flight.getDepartureTime(),
                         flight.getNumOfSeats()))
-                .toList();
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -71,7 +72,7 @@ public class FlightServiceImpl implements FlightService {
             ).map(entity -> new FlightDto(entity.getId(), entity.getOrigin(),
                     entity.getDestination(), entity.getDepartureTime(),
                     entity.getNumOfSeats())
-            ).toList();
+            ).collect(Collectors.toList());
         } catch (NullPointerException e) {
             System.out.println(e.getMessage());
             return new ArrayList<>();
@@ -90,7 +91,7 @@ public class FlightServiceImpl implements FlightService {
             ).map(entity -> new FlightDto(entity.getId(), entity.getOrigin(),
                     entity.getDestination(), entity.getDepartureTime(),
                     entity.getNumOfSeats())
-            ).toList();
+            ).collect(Collectors.toList());
         } catch (NullPointerException e) {
             System.out.println(e.getMessage());
             return new ArrayList<>();
