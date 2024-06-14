@@ -13,6 +13,7 @@ RUN mvn package -DskipTests
 FROM openjdk:16-jdk
 
 WORKDIR /app
+
 COPY --from=builder /app/target/Booking_Plane_App-1.0-SNAPSHOT.jar /app/booking-plane.jar
 
 CMD ["java", "-jar", "booking-plane.jar"]
