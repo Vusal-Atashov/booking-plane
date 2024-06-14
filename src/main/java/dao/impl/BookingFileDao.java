@@ -23,14 +23,22 @@ public class BookingFileDao implements BookingDao {
     private final String BOOKING_FILE_PATH = RESOURCE_PATH + "booking.bin";
     private final File file = new File(BOOKING_FILE_PATH);
 
+
+
     public void save(BookingEntity entity) {
         FlightFileDao flightDao = new FlightFileDao();
         FlightEntity flightEntity = flightDao.findById(entity.getFlightId());
+
+        if (flightEntity == null) {
+            System.err.println("Flight not found: " + entity.getFlightId());
+            return;
+        }
+
         flightDao.cancelFlight(flightEntity.getId());
         int numOfSeats = flightEntity.getNumOfSeats() - entity.getPassengerNames().size();
         if (numOfSeats < 0) {
-            System.out.println(("Not enough seats"));
-            flightDao.save(flightEntity);
+            System.out.println("Not enough seats");
+            flightDao.save(flightEntity);  // Revert the flight cancellation
         } else {
             try (FileOutputStream fos = new FileOutputStream(file, true);
                  ObjectOutputStream oos = file.exists() && file.length() > 0 ?
@@ -43,6 +51,7 @@ public class BookingFileDao implements BookingDao {
             }
         }
     }
+
 
     public List<BookingEntity> findAll() {
         List<BookingEntity> bookingEntityList = new ArrayList<>();

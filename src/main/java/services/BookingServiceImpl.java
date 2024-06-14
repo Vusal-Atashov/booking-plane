@@ -6,6 +6,9 @@ import dto.BookingDto;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
+
 
 public class BookingServiceImpl implements BookingService {
     private final BookingDao bookingDao;
@@ -25,7 +28,7 @@ public class BookingServiceImpl implements BookingService {
         return bookingDao.findAll().stream()
                 .map(booking -> new BookingDto(booking.getId(), booking.getFlightId(),
                         booking.getPassengerNames()))
-                .toList();
+                .collect(Collectors.toList());
     }
 
     public Optional<BookingEntity> findById(long id) {
@@ -37,7 +40,7 @@ public class BookingServiceImpl implements BookingService {
         return bookingDao.findByFullName(List.of(passengerName)).stream()
                 .map(booking -> new BookingDto(booking.getId(), booking.getFlightId(),
                         booking.getPassengerNames()))
-                .toList();
+                .collect(Collectors.toList());
     }
 
     @Override

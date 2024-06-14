@@ -1,12 +1,11 @@
 package dao.entity;
 
-import java.io.Serial;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
 public class BookingEntity implements Serializable {
-    @Serial
     private static final long serialVersionUID = 1L;
     public static long MAX_ID = 0;
     private long id;
